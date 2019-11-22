@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!-- <script type="module">
+    import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.esm.browser.js'
+    </script> -->
+</head>
+
+<body>
+  <div id="app-2">
+    <div>
+      {{a}}
+    </div>
+    <p v-if="seen">现在你看到我了</p>
+    <div>Message: {{ msg }}</div>
+    <div v-once>
+      通过使用 v-once 指令，你也能执行一次性地插值，当数据改变时，插值处的内容不会更新。但请留心这会影响到该节点上的其它数据绑定：
+      这个将不会改变: {{ msg }}</div>
+    <div>Message: {{ msg }}</div>
+    <div>
+      <ol>
+        <li v-for="todo in todos">
+          {{todo.text}}
+        </li>
+      </ol>
+    </div>
+    <span v-bind:title="message">123123123</span>
+    <p>
+      {{message}}
+    </p>
+    <button v-on:click="reverseMessage">反转消息</button>
+    <input v-model="message" />
+    <todo-item></todo-item>
+    <ol>
+      <!--
+          现在我们为每个 todo-item 提供 todo 对象
+          todo 对象是变量，即其内容可以是动态的。
+          我们也需要为每个组件提供一个“key”，稍后再
+          作详细解释。
+        -->
+      <todo-item v-for="item in groceryList" v-bind:todo="item" v-bind:key="item.id"></todo-item>
+    </ol>
+
+
+    <p>Using mustaches: {{ rawHtml }}</p>
+    <!-- 双大括号会将数据解释为普通文本，而非 HTML 代码。为了输出真正的 HTML，你需要使用 v-html 指令： -->
+    <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+
+
+
+    <!-- 完整语法 -->
+    <a v-bind:href="url">...</a>
+    <!-- 缩写 -->
+    <a :href="url">...</a>
+
+
+    <!-- 完整语法 -->
+    <a v-on:click="doSomething">...</a>
+    <!-- 缩写 -->
+    <a @click="doSomething">...</a>
+
+    <div>
+      <p>初始:{{Msgs}}</p>
+      <p>改变后:{{reverseMsgs}}</p>
+      <p>{{now}}</p>
+      <p>{{new Date()}}</p>
+    </div>
+
+    <h1 v-if="awesome">Vue is awesome!</h1>
+    <h1 v-else>Oh no 😢</h1>
+
+
+    <template v-if="loginType === 'username'">
+      <label>Username</label>
+      <input placeholder="Enter your username">
+    </template>
+    <template v-else>
+      <label>Email</label>
+      <input placeholder="Enter your email address">
+    </template>
+
+    <h1 v-show="false">Hello!</h1>
+    <ol>
+      <li v-for="(item,name,index) in obj">
+        {{index}}
+        :
+        {{name}}
+        :
+        {{item}}
+      </li>
+    </ol>
+    <textarea>{{msg}}</textarea>
+
+
+    <br>
+    <div>
+      <input type="checkbox" id="jack" value="jack" v-model="checkedNames">
+      <label for="jack">jack</label>
+      <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+      <label for="mike">Mike</label>
+      <br>
+      <span>Checked names: {{ checkedNames }}</span>
+    </div>
+    <br>
+    <div>
+      <input type="radio" id="one" value="one" v-model="picked">
+      <label for="one">one</label>
+      <input type="radio" id="two" value="two" v-model="picked">
+      <label for="two">TWO</label>
+      <br>
+      <span>picked:{{picked}}</span>
+      <br>
+    </div>
+  </div>
+  <script>
+    var data = {
+      a: 12
+    }
+    var app2 = new Vue({
+      el: '#app-2',
+
+      data: {
+        a: 1,
+        picked: '',
+        checkedNames: [],
+        obj: {
+          name: 'lc',
+          age: 25
+        },
+        msg: '12366',
+        loginType: "username",
+        // awesome: true,
+        seen: false,
+        rawHtml: '<h1>12312</h1>',
+        todos: [{
+            text: 'aaa'
+          },
+          {
+            text: 'bbb'
+          },
+          {
+            text: 'ccc'
+          },
+        ],
+        groceryList: [{
+            id: 0,
+            text: '蔬菜'
+          },
+          {
+            id: 1,
+            text: '奶酪'
+          },
+          {
+            id: 2,
+            text: '随便其它什么人吃的东西'
+          }
+        ],
+        message: new Date().toLocaleString(),
+        Msgs: '123456789'
+      },
+      created: function () {
+        // `this` 指向 vm 实例
+        console.log('created a is: ' + this.a)
+      },
+      mounted: function () {
+        // `this` 指向 vm 实例
+        console.log('mounted a is: ' + this.a)
+
+      },
+      updated: function () {
+        // `this` 指向 vm 实例
+        console.log('updated a is: ' + this.a)
+      },
+      destroyed: function () {
+        // `this` 指向 vm 实例
+        console.log('destroyed a is: ' + this.a)
+      },
+      methods: {
+        reverseMessage: function () {
+          this.message = this.message.split('').reverse().join('') || ''
+        }
+      },
+      computed: {
+        reverseMsgs: function () {
+          return this.Msgs.split('').reverse().join('')
+        },
+        now: function () {
+          return Date.now()
+        }
+      }
+    })
+    app2.msg = 456
+    // data.a = 3
+    Vue.component('todo-item', {
+      template: '<li>这是个代办项</li>'
+    })
+    // 你可以添加一个新的 age 属性到嵌套的 obj 对象：
+    Vue.set(app2.obj, 'age1', 27) //可以修改和添加属性值
+    // 你还可以使用 app2.$set 实例方法，它只是全局 Vue.set 的别名：
+    app2.$set(app2.obj, 'age2', 27) //可以修改和添加属性值
+    //修改对象的属性值和添加属性，这样才能做到数据相应
+    app2.obj = Object.assign({}, app2.obj, {
+      age: 27,
+      favoriteColor: 'Vue Green'
+    })
+  </script>
+</body>
+
+</html>
